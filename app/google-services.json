@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "736095800314",
+    "project_id": "vierdesjet",
+    "storage_bucket": "vierdesjet.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:736095800314:android:c76aed93e394d1def83243",
+        "android_client_info": {
+          "package_name": "com.danp.vierdesjet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "736095800314-0vibo9toohrjpvnkdaegamsnbboop330.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBI6APjxQ3V77abjhzBQCGtCyjMtwneGGg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "736095800314-0vibo9toohrjpvnkdaegamsnbboop330.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
