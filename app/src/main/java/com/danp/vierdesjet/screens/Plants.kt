@@ -14,8 +14,9 @@ import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 
 @Composable
-fun Login(
-    navPlants: () -> Unit
+fun Plants(
+    navPlantsCreator: () -> Unit,
+    navPlantsDetails: () -> Unit
 ) {
     val db = Firebase.firestore
     val coroutineScope = rememberCoroutineScope()
@@ -30,10 +31,12 @@ fun Login(
     }
 
     Column() {
-        Text(text = "Login")
-
-        Button(onClick = { navPlants()},  modifier = Modifier.width(200.dp)) {
-            Text("SIGN UP")
+        Text(text = "Plants")
+        Button(onClick = { navPlantsCreator()},  modifier = Modifier.width(200.dp)) {
+            Text("Plants Creator")
+        }
+        Button(onClick = { navPlantsDetails()},  modifier = Modifier.width(200.dp)) {
+            Text("Plants Details")
         }
     }
 }
