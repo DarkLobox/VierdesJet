@@ -35,7 +35,7 @@ fun Login(
     Scaffold(topBar = {
         TopAppBar(
             backgroundColor = Color(0xFF11E489),
-            title = { Text(text = "Login", color = Color.White) },
+            title = { Text(text = "Login") },
             actions = {
                 IconButton(onClick = { navHome()}) {
                     Icon(imageVector = Icons.Filled.Home, contentDescription = "Home")

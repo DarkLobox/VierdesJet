@@ -3,6 +3,11 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Universidad/Plataformas/continua 2/VierdesJet/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1" />
+        <entry key="..\:/Universidad/Plataformas/continua 2/VierdesJet/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1" />
+        <entry key="..\:/Universidad/Plataformas/continua 2/VierdesJet/app/src/main/res/layout/notification.xml" value="0.11302083333333333" />
+        <entry key="..\:/Universidad/Plataformas/continua 2/VierdesJet/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.1" />
+        <entry key="..\:/Universidad/Plataformas/continua 2/VierdesJet/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.1" />
         <entry key="..\:/Users/DarkLobox/AndroidStudioProjects/VierdesJet/app/src/main/res/drawable/plant_icon.xml" value="0.1" />
       </map>
     </option>
