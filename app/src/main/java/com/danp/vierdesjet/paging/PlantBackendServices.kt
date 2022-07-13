@@ -1,8 +1,6 @@
 package com.danp.vierdesjet.paging
 
 import android.content.Context
-import androidx.compose.runtime.collectAsState
-import com.danp.vierdesjet.DataStoreManager
 import com.danp.vierdesjet.room.plant.PlantApp
 import com.danp.vierdesjet.room.plant.PlantEntity
 

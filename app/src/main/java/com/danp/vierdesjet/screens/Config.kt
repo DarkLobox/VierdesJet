@@ -20,8 +20,6 @@ import com.danp.vierdesjet.DataStoreManager
 import com.danp.vierdesjet.R
 import com.danp.vierdesjet.room.user.UserApp
 import com.danp.vierdesjet.room.user.UserEntity
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 
 @Composable

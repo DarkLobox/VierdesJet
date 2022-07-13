@@ -1,6 +1,5 @@
 package com.danp.vierdesjet.screens
 
-import android.content.Context
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -19,15 +18,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.danp.vierdesjet.DataStoreManager
 import com.danp.vierdesjet.PlantStatus
 import com.danp.vierdesjet.R
-import com.danp.vierdesjet.navigation.Destinations
 import com.danp.vierdesjet.room.plant.PlantApp
-import com.danp.vierdesjet.room.plant.PlantEntity
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
 @Composable

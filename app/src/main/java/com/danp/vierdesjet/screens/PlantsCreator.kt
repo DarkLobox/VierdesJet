@@ -24,8 +24,6 @@ import com.danp.vierdesjet.DataStoreManager
 import com.danp.vierdesjet.R
 import com.danp.vierdesjet.room.plant.PlantApp
 import com.danp.vierdesjet.room.plant.PlantEntity
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.*
