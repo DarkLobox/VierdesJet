@@ -154,6 +154,8 @@ fun PlantsActions(
                 Text("RESET")
             }
 
+            Spacer(modifier = Modifier.height(40.dp))
+
             Button(onClick = {
                 val myInput: InputStream
 

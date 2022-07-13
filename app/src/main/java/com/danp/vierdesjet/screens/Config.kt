@@ -153,7 +153,10 @@ fun Config(
                     } catch (e: Exception){
                         Log.d("Prueba", "No se eliminar el usuario")
                     }
-                } },  modifier = Modifier.width(200.dp)) {
+                } },
+                modifier = Modifier.width(200.dp),
+                colors=ButtonDefaults.buttonColors(backgroundColor = Color(0xFFDF0D24))
+                ) {
                 Text("Delete User")
             }
         }

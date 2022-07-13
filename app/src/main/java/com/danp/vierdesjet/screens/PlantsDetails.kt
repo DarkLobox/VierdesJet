@@ -167,7 +167,10 @@ fun PlantsDetails(
                         Log.d("Prueba", "No se realizo el cambio en Status")
                     }
                 }
-            },modifier = Modifier.width(150.dp)) {
+            },
+                modifier = Modifier.width(200.dp),
+                colors=ButtonDefaults.buttonColors(backgroundColor = Color(0xFFDF0D24))
+                ) {
                 Text("Delete Plant")
             }
 
