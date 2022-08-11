@@ -15,9 +15,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.work.Data
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.danp.vierdesjet.DataStoreManager
 import com.danp.vierdesjet.R
 import com.danp.vierdesjet.room.user.UserApp
+import com.danp.vierdesjet.workers.ResetWorker
 import kotlinx.coroutines.launch
 
 @Composable
@@ -36,8 +41,22 @@ fun Home(
     val userEmail = dataStore.emailUser.collectAsState(initial = "").value.toString()
     val userPassword = dataStore.passwordUser.collectAsState(initial = "").value.toString()
     var userName = dataStore.nameUser.collectAsState(initial = "").value.toString()
+    val userCode = dataStore.groupUser.collectAsState(initial = "").value.toString()
+    val dateReset = dataStore.dateReset.collectAsState(initial = "").value.toString()
+
     if(userName.compareTo("")!=0){
         userName = "Bienvenido $userName"
+
+        //Reset diario al entrar a la aplicacion
+        val myData = Data.Builder()
+            .putString("KEY_RESET_ARG", dateReset)
+            .putString("KEY_CODE_ARG", userCode)
+            .build()
+
+        val resetTaskRequest = OneTimeWorkRequestBuilder<ResetWorker>()
+            .setInputData(myData)
+            .build()
+        WorkManager.getInstance(context).enqueue(resetTaskRequest)
     }
 
     Scaffold(topBar = {
