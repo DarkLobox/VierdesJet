@@ -13,11 +13,18 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.work.Data
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
 import com.danp.vierdesjet.DataStoreManager
 import com.danp.vierdesjet.R
 import com.danp.vierdesjet.room.plant.PlantApp
 import com.danp.vierdesjet.room.plant.PlantEntity
 import com.danp.vierdesjet.room.user.UserApp
+import com.danp.vierdesjet.workers.CheckA
+import com.danp.vierdesjet.workers.CheckB
+import com.danp.vierdesjet.workers.CheckC
+import com.danp.vierdesjet.workers.ResetWorker
 import kotlinx.coroutines.launch
 import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.Row
@@ -49,6 +56,11 @@ fun PlantsActions(
     var textType by remember { mutableStateOf("") }
     var textPrice by remember { mutableStateOf("") }
     var textDescription by remember { mutableStateOf("") }
+
+    val myData = Data.Builder()
+        .putString("KEY_RESET_ARG", dateReset)
+        .putString("KEY_CODE_ARG", userCode)
+        .build()
 
     Scaffold(topBar = {
         TopAppBar(
@@ -124,7 +136,24 @@ fun PlantsActions(
             Spacer(modifier = Modifier.height(40.dp))
 
             Button(onClick = {
-                coroutineScope.launch {
+
+                val checkA = OneTimeWorkRequestBuilder<CheckA>()
+                    .setInputData(myData)
+                    .build()
+
+                val checkB = OneTimeWorkRequestBuilder<CheckB>()
+                    .setInputData(myData)
+                    .build()
+
+                val checkC = OneTimeWorkRequestBuilder<CheckC>()
+                    .setInputData(myData)
+                    .build()
+
+                WorkManager.getInstance(context)
+                    .beginWith(Arrays.asList(checkA, checkB, checkC))
+                    .enqueue()
+
+                /*coroutineScope.launch {
                     try {
                         plantApp.room.plantDao().updateAllA(userCode)
                         plantApp.room.plantDao().updateAllB(userCode)
@@ -134,7 +163,7 @@ fun PlantsActions(
                     } catch (e: Exception) {
                         Log.d("Prueba", "No se pudo crear checkear")
                     }
-                }
+                }*/
             },modifier = Modifier.width(200.dp)) {
                 Text("CHECK ALL")
             }
