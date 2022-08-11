@@ -15,15 +15,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.work.Data
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.WorkManager
-import androidx.work.workDataOf
+import androidx.work.*
 import com.danp.vierdesjet.DataStoreManager
 import com.danp.vierdesjet.R
 import com.danp.vierdesjet.room.user.UserApp
+import com.danp.vierdesjet.workers.PlantsIrrigatedHour
 import com.danp.vierdesjet.workers.ResetWorker
 import kotlinx.coroutines.launch
+import java.util.concurrent.TimeUnit
 
 @Composable
 fun Home(
@@ -57,6 +56,15 @@ fun Home(
             .setInputData(myData)
             .build()
         WorkManager.getInstance(context).enqueue(resetTaskRequest)
+
+        val plantsIrrigatedTaskRequest = PeriodicWorkRequestBuilder<PlantsIrrigatedHour>(20, TimeUnit.MINUTES)
+            .setInputData(myData)
+            .build()
+        WorkManager.getInstance(context).enqueueUniquePeriodicWork(
+            "plantsIrrigatedTaskRequest",
+            ExistingPeriodicWorkPolicy.KEEP,
+            plantsIrrigatedTaskRequest
+        )
     }
 
     Scaffold(topBar = {

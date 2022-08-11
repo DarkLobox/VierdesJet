@@ -11,6 +11,10 @@ data class UserEntity(
     val code: String,
     val dateCreation: String,
     val status: Boolean,
+    val plantsIrrigated: Int,
+    val plantsIrrigatedA: Int,
+    val plantsIrrigatedB: Int,
+    val plantsIrrigatedC: Int
 ) {
     @PrimaryKey(autoGenerate = true) var id: Int = 0
 }

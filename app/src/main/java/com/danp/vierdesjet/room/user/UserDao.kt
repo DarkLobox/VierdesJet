@@ -22,4 +22,27 @@ interface UserDao {
     @Delete
     suspend fun delete(userEntity: UserEntity)
 
+    @Query("SELECT plantsIrrigated FROM UserEntity WHERE code = :code")
+    suspend fun getPlantsIrrigated(code:String) : Int
+
+    @Query("UPDATE UserEntity SET plantsIrrigated=:number WHERE code = :code")
+    suspend fun setPlantsIrrigated(number: Int, code:String)
+
+    @Query("SELECT plantsIrrigatedA FROM UserEntity WHERE code = :code")
+    suspend fun getPlantsIrrigatedA(code:String) : Int
+
+    @Query("UPDATE UserEntity SET plantsIrrigatedA=:number WHERE code = :code")
+    suspend fun setPlantsIrrigatedA(number: Int, code:String)
+
+    @Query("SELECT plantsIrrigatedB FROM UserEntity WHERE code = :code")
+    suspend fun getPlantsIrrigatedB(code:String) : Int
+
+    @Query("UPDATE UserEntity SET plantsIrrigatedB=:number WHERE code = :code")
+    suspend fun setPlantsIrrigatedB(number: Int, code:String)
+
+    @Query("SELECT plantsIrrigatedC FROM UserEntity WHERE code = :code")
+    suspend fun getPlantsIrrigatedC(code:String) : Int
+
+    @Query("UPDATE UserEntity SET plantsIrrigatedC=:number WHERE code = :code")
+    suspend fun setPlantsIrrigatedC(number: Int, code:String)
 }

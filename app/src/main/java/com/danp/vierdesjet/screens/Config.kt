@@ -115,7 +115,11 @@ fun Config(
                         userPassword,
                         textGroup,
                         userDateCreation,
-                        userStatus.toBoolean()
+                        userStatus.toBoolean(),
+                        0,
+                        0,
+                        0,
+                        0
                     )
                     try {
                         user.id = userId.toInt()
@@ -140,7 +144,11 @@ fun Config(
                         userPassword,
                         userGroup,
                         userDateCreation,
-                        false
+                        false,
+                        0,
+                        0,
+                        0,
+                        0
                     )
                     try {
                         user.id = userId.toInt()

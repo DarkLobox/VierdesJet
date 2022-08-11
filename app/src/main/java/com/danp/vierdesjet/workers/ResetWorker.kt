@@ -6,6 +6,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.danp.vierdesjet.DataStoreManager
 import com.danp.vierdesjet.room.plant.PlantApp
+import com.danp.vierdesjet.room.user.UserApp
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -18,6 +19,7 @@ class ResetWorker(context: Context, workerParams: WorkerParameters) :
 
     val plantApp = PlantApp(context)
     val dataStore = DataStoreManager(context)
+    val userApp = UserApp(context)
 
     override suspend fun doWork(): Result {
         val dateReset = inputData.getString(KEY_RESET_ARG)
@@ -30,7 +32,7 @@ class ResetWorker(context: Context, workerParams: WorkerParameters) :
                     plantApp.room.plantDao().resetAllB(userCode)
                     plantApp.room.plantDao().resetAllC(userCode)
                     dataStore.setDateReset(dateTemp)
-                    dataStore.setPlantIrrigated("0")
+                    userApp.room.userDao().setPlantsIrrigated(0,userCode)
                 } catch (e: Exception) { }
             }
         }

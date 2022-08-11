@@ -28,6 +28,7 @@ import com.danp.vierdesjet.DataStoreManager
 import com.danp.vierdesjet.PlantStatus
 import com.danp.vierdesjet.R
 import com.danp.vierdesjet.room.plant.PlantApp
+import com.danp.vierdesjet.room.user.UserApp
 import com.danp.vierdesjet.service.channelId
 import com.danp.vierdesjet.service.channelName
 import kotlinx.coroutines.launch
@@ -52,32 +53,15 @@ fun PlantsDetails(
     val dataStore = DataStoreManager(context)
     val coroutineScope = rememberCoroutineScope()
     val plantApp = PlantApp(context)
+    val userApp = UserApp(context)
 
-    var plantsIrrigated = dataStore.plantIrrigated.collectAsState(initial = "0").value.toString().toInt()
+    val userCode = dataStore.groupUser.collectAsState(initial = "").value.toString()
 
     val status = remember{
         mutableStateListOf<PlantStatus>()
     }
     status.clear()
     status.add(PlantStatus(plantA,plantB,plantC))
-
-    val channel_id = 0
-    val channel_name = "recordatorio"
-    var builder = NotificationCompat.Builder(context, channelId)
-        .setSmallIcon(R.drawable.plant_icon)
-        .setContentTitle("Recordatorio")
-        .setContentText("Plantas regadas: ")
-        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-
-    val notificationManager =
-        context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-        val notificationChannel =
-            NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
-        notificationManager.createNotificationChannel(notificationChannel)
-    }
-    notificationManager.notify(channel_id,builder.build())
-
 
     Scaffold(topBar = {
         TopAppBar(
@@ -132,9 +116,7 @@ fun PlantsDetails(
                     Button(enabled = item.a == false, onClick = {
                         coroutineScope.launch {
                             try {
-                                plantsIrrigated += 1
-                                dataStore.setPlantIrrigated(plantsIrrigated.toString())
-                                Log.d("Prueba", plantsIrrigated.toString())
+                                addIrrigated(userApp,userCode)
 
                                 plantApp.room.plantDao().updateA(plantId)
                                 Log.d("Prueba", "Cambio realizado en planta A")
@@ -152,9 +134,7 @@ fun PlantsDetails(
                     Button(enabled = item.b == false, onClick = {
                         coroutineScope.launch {
                             try {
-                                plantsIrrigated += 1
-                                dataStore.setPlantIrrigated(plantsIrrigated.toString())
-                                Log.d("Prueba", plantsIrrigated.toString())
+                                addIrrigated(userApp,userCode)
 
                                 plantApp.room.plantDao().updateB(plantId)
                                 Log.d("Prueba", "Cambio realizado en planta B")
@@ -172,9 +152,7 @@ fun PlantsDetails(
                     Button(enabled = item.c == false, onClick = {
                         coroutineScope.launch {
                             try {
-                                plantsIrrigated += 1
-                                dataStore.setPlantIrrigated(plantsIrrigated.toString())
-                                Log.d("Prueba", plantsIrrigated.toString())
+                                addIrrigated(userApp,userCode)
 
                                 plantApp.room.plantDao().updateC(plantId)
                                 Log.d("Prueba", "Cambio realizado en planta C")
@@ -212,4 +190,19 @@ fun PlantsDetails(
         }
     }
 
+}
+
+suspend fun addIrrigated(userApp:UserApp, userCode:String){
+    var plantsIrrigated = userApp.room.userDao().getPlantsIrrigated(userCode)
+    var plantsIrrigatedA = userApp.room.userDao().getPlantsIrrigatedA(userCode)
+    var plantsIrrigatedB = userApp.room.userDao().getPlantsIrrigatedB(userCode)
+    var plantsIrrigatedC = userApp.room.userDao().getPlantsIrrigatedC(userCode)
+    plantsIrrigated += 1
+    plantsIrrigatedA += 1
+    plantsIrrigatedB += 1
+    plantsIrrigatedC += 1
+    userApp.room.userDao().setPlantsIrrigated(plantsIrrigated,userCode)
+    userApp.room.userDao().setPlantsIrrigatedA(plantsIrrigatedA,userCode)
+    userApp.room.userDao().setPlantsIrrigatedB(plantsIrrigatedB,userCode)
+    userApp.room.userDao().setPlantsIrrigatedC(plantsIrrigatedC,userCode)
 }

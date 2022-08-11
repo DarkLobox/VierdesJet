@@ -17,6 +17,7 @@ import com.danp.vierdesjet.DataStoreManager
 import com.danp.vierdesjet.R
 import com.danp.vierdesjet.room.plant.PlantApp
 import com.danp.vierdesjet.room.plant.PlantEntity
+import com.danp.vierdesjet.room.user.UserApp
 import kotlinx.coroutines.launch
 import org.apache.poi.ss.usermodel.Cell
 import org.apache.poi.ss.usermodel.Row
@@ -36,6 +37,7 @@ fun PlantsActions(
     val dataStore = DataStoreManager(context)
     val coroutineScope = rememberCoroutineScope()
     val plantApp = PlantApp(context)
+    val userApp = UserApp(context)
 
     //Recuperacion de datos datastore
     val userEmail = dataStore.emailUser.collectAsState(initial = "").value.toString()
@@ -145,6 +147,7 @@ fun PlantsActions(
                         plantApp.room.plantDao().resetAllA(userCode)
                         plantApp.room.plantDao().resetAllB(userCode)
                         plantApp.room.plantDao().resetAllC(userCode)
+                        userApp.room.userDao().setPlantsIrrigated(0,userCode)
                         Log.d("Prueba", "Valores reseteados")
                         navPlants()
                     } catch (e: Exception) {
@@ -153,31 +156,6 @@ fun PlantsActions(
                 }
             },modifier = Modifier.width(200.dp)) {
                 Text("RESET")
-            }
-
-            Spacer(modifier = Modifier.height(40.dp))
-
-            Button(onClick = {
-                coroutineScope.launch {
-                    val dateTemp = SimpleDateFormat("dd/M/yyyy").format(Date())
-                    if(dateReset.compareTo(dateTemp)==0){
-                        Log.d("Prueba", "Ya se reseteo hoy dia")
-                    }
-                    else{
-                        try {
-                            plantApp.room.plantDao().resetAllA(userCode)
-                            plantApp.room.plantDao().resetAllB(userCode)
-                            plantApp.room.plantDao().resetAllC(userCode)
-                            navPlants()
-                            dataStore.setDateReset(dateTemp)
-                            Log.d("Prueba", "Reseteo exitoso")
-                        } catch (e: Exception) {
-                            Log.d("Prueba", "Error al tratar de resetear")
-                        }
-                    }
-                }
-            },modifier = Modifier.width(200.dp)) {
-                Text("RESET SYSTEM")
             }
 
             Spacer(modifier = Modifier.height(40.dp))

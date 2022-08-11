@@ -83,7 +83,11 @@ fun SignUp(
                     textPassword,
                     textCode,
                     dateTemp,
-                    true
+                    true,
+                    0,
+                    0,
+                    0,
+                    0
                 )
                 coroutineScope.launch {
                     try {
