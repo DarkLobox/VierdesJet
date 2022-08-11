@@ -22,6 +22,9 @@ class DataStoreManager(private val context: Context){
         private val STATUS_KEY = stringPreferencesKey("status_key")
         private val DATE_CREATION_KEY = stringPreferencesKey("date_creation_key")
         private val ID_KEY = stringPreferencesKey("id_key")
+
+        private val DATE_RESET = stringPreferencesKey("date_reet")
+        private val PLANT_IRRIGATED = stringPreferencesKey("plant_irrigated")
     }
 
     //
@@ -92,6 +95,17 @@ class DataStoreManager(private val context: Context){
             preferences[ID_KEY] = dateCreationValue
         }
     }
+    suspend fun setDateReset(dateCreationValue: String){
+        context.dataStore.edit { preferences ->
+            preferences[DATE_RESET] = dateCreationValue
+        }
+    }
+    suspend fun setPlantIrrigated(plantIrrigatedValue: String){
+        context.dataStore.edit { preferences ->
+            preferences[PLANT_IRRIGATED] = plantIrrigatedValue
+        }
+    }
+
     // A getter for the counter value flow
     val emailUser: Flow<String?> = context.dataStore.data.map { preferences ->
         preferences[EMAIL_KEY] ?: ""
@@ -113,5 +127,11 @@ class DataStoreManager(private val context: Context){
     }
     val idUser: Flow<String?> = context.dataStore.data.map { preferences ->
         preferences[ID_KEY] ?: ""
+    }
+    val dateReset: Flow<String?> = context.dataStore.data.map { preferences ->
+        preferences[DATE_RESET] ?: ""
+    }
+    val plantIrrigated: Flow<String?> = context.dataStore.data.map { preferences ->
+        preferences[PLANT_IRRIGATED] ?: "0"
     }
 }

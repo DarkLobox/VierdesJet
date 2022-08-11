@@ -41,6 +41,7 @@ fun PlantsActions(
     val userEmail = dataStore.emailUser.collectAsState(initial = "").value.toString()
     val userPassword = dataStore.passwordUser.collectAsState(initial = "").value.toString()
     val userCode = dataStore.groupUser.collectAsState(initial = "").value.toString()
+    val dateReset = dataStore.dateReset.collectAsState(initial = "").value.toString()
 
     //Variables mutables para el formulario
     var textType by remember { mutableStateOf("") }
@@ -152,6 +153,31 @@ fun PlantsActions(
                 }
             },modifier = Modifier.width(200.dp)) {
                 Text("RESET")
+            }
+
+            Spacer(modifier = Modifier.height(40.dp))
+
+            Button(onClick = {
+                coroutineScope.launch {
+                    val dateTemp = SimpleDateFormat("dd/M/yyyy").format(Date())
+                    if(dateReset.compareTo(dateTemp)==0){
+                        Log.d("Prueba", "Ya se reseteo hoy dia")
+                    }
+                    else{
+                        try {
+                            plantApp.room.plantDao().resetAllA(userCode)
+                            plantApp.room.plantDao().resetAllB(userCode)
+                            plantApp.room.plantDao().resetAllC(userCode)
+                            navPlants()
+                            dataStore.setDateReset(dateTemp)
+                            Log.d("Prueba", "Reseteo exitoso")
+                        } catch (e: Exception) {
+                            Log.d("Prueba", "Error al tratar de resetear")
+                        }
+                    }
+                }
+            },modifier = Modifier.width(200.dp)) {
+                Text("RESET SYSTEM")
             }
 
             Spacer(modifier = Modifier.height(40.dp))

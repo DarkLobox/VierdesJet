@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.danp.vierdesjet.DataStoreManager
 import com.danp.vierdesjet.PlantStatus
 import com.danp.vierdesjet.R
 import com.danp.vierdesjet.room.plant.PlantApp
@@ -40,8 +41,11 @@ fun PlantsDetails(
 ) {
     //Base de datos variables
     val context = LocalContext.current
+    val dataStore = DataStoreManager(context)
     val coroutineScope = rememberCoroutineScope()
     val plantApp = PlantApp(context)
+
+    var plantsIrrigated = dataStore.plantIrrigated.collectAsState(initial = "0").value.toString().toInt()
 
     val status = remember{
         mutableStateListOf<PlantStatus>()
@@ -102,6 +106,10 @@ fun PlantsDetails(
                     Button(enabled = item.a == false, onClick = {
                         coroutineScope.launch {
                             try {
+                                plantsIrrigated += 1
+                                dataStore.setPlantIrrigated(plantsIrrigated.toString())
+                                Log.d("Prueba", plantsIrrigated.toString())
+
                                 plantApp.room.plantDao().updateA(plantId)
                                 Log.d("Prueba", "Cambio realizado en planta A")
                                 status.set(index, PlantStatus(true,item.b,item.c))
@@ -118,6 +126,10 @@ fun PlantsDetails(
                     Button(enabled = item.b == false, onClick = {
                         coroutineScope.launch {
                             try {
+                                plantsIrrigated += 1
+                                dataStore.setPlantIrrigated(plantsIrrigated.toString())
+                                Log.d("Prueba", plantsIrrigated.toString())
+
                                 plantApp.room.plantDao().updateB(plantId)
                                 Log.d("Prueba", "Cambio realizado en planta B")
                                 status.set(index, PlantStatus(item.a,true,item.c))
@@ -134,6 +146,10 @@ fun PlantsDetails(
                     Button(enabled = item.c == false, onClick = {
                         coroutineScope.launch {
                             try {
+                                plantsIrrigated += 1
+                                dataStore.setPlantIrrigated(plantsIrrigated.toString())
+                                Log.d("Prueba", plantsIrrigated.toString())
+                                
                                 plantApp.room.plantDao().updateC(plantId)
                                 Log.d("Prueba", "Cambio realizado en planta C")
                                 status.set(index, PlantStatus(item.a,item.b,true))
