@@ -1,5 +1,9 @@
 package com.danp.vierdesjet.screens
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.os.Build
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -18,10 +22,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.app.NotificationCompat
+import androidx.core.content.ContextCompat.getSystemService
 import com.danp.vierdesjet.DataStoreManager
 import com.danp.vierdesjet.PlantStatus
 import com.danp.vierdesjet.R
 import com.danp.vierdesjet.room.plant.PlantApp
+import com.danp.vierdesjet.service.channelId
+import com.danp.vierdesjet.service.channelName
 import kotlinx.coroutines.launch
 
 @Composable
@@ -52,6 +60,24 @@ fun PlantsDetails(
     }
     status.clear()
     status.add(PlantStatus(plantA,plantB,plantC))
+
+    val channel_id = 0
+    val channel_name = "recordatorio"
+    var builder = NotificationCompat.Builder(context, channelId)
+        .setSmallIcon(R.drawable.plant_icon)
+        .setContentTitle("Recordatorio")
+        .setContentText("Plantas regadas: ")
+        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+
+    val notificationManager =
+        context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+        val notificationChannel =
+            NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_HIGH)
+        notificationManager.createNotificationChannel(notificationChannel)
+    }
+    notificationManager.notify(channel_id,builder.build())
+
 
     Scaffold(topBar = {
         TopAppBar(
@@ -149,7 +175,7 @@ fun PlantsDetails(
                                 plantsIrrigated += 1
                                 dataStore.setPlantIrrigated(plantsIrrigated.toString())
                                 Log.d("Prueba", plantsIrrigated.toString())
-                                
+
                                 plantApp.room.plantDao().updateC(plantId)
                                 Log.d("Prueba", "Cambio realizado en planta C")
                                 status.set(index, PlantStatus(item.a,item.b,true))
