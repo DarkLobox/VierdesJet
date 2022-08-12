@@ -116,7 +116,7 @@ fun PlantsDetails(
                     Button(enabled = item.a == false, onClick = {
                         coroutineScope.launch {
                             try {
-                                addIrrigated(userApp,userCode)
+                                addIrrigatedA(userApp,userCode)
 
                                 plantApp.room.plantDao().updateA(plantId)
                                 Log.d("Prueba", "Cambio realizado en planta A")
@@ -134,7 +134,7 @@ fun PlantsDetails(
                     Button(enabled = item.b == false, onClick = {
                         coroutineScope.launch {
                             try {
-                                addIrrigated(userApp,userCode)
+                                addIrrigatedB(userApp,userCode)
 
                                 plantApp.room.plantDao().updateB(plantId)
                                 Log.d("Prueba", "Cambio realizado en planta B")
@@ -152,7 +152,7 @@ fun PlantsDetails(
                     Button(enabled = item.c == false, onClick = {
                         coroutineScope.launch {
                             try {
-                                addIrrigated(userApp,userCode)
+                                addIrrigatedC(userApp,userCode)
 
                                 plantApp.room.plantDao().updateC(plantId)
                                 Log.d("Prueba", "Cambio realizado en planta C")
@@ -192,17 +192,29 @@ fun PlantsDetails(
 
 }
 
-suspend fun addIrrigated(userApp:UserApp, userCode:String){
+suspend fun addIrrigatedA(userApp:UserApp, userCode:String){
     var plantsIrrigated = userApp.room.userDao().getPlantsIrrigated(userCode)
     var plantsIrrigatedA = userApp.room.userDao().getPlantsIrrigatedA(userCode)
-    var plantsIrrigatedB = userApp.room.userDao().getPlantsIrrigatedB(userCode)
-    var plantsIrrigatedC = userApp.room.userDao().getPlantsIrrigatedC(userCode)
     plantsIrrigated += 1
     plantsIrrigatedA += 1
-    plantsIrrigatedB += 1
-    plantsIrrigatedC += 1
     userApp.room.userDao().setPlantsIrrigated(plantsIrrigated,userCode)
     userApp.room.userDao().setPlantsIrrigatedA(plantsIrrigatedA,userCode)
+}
+
+suspend fun addIrrigatedB(userApp:UserApp, userCode:String){
+    var plantsIrrigated = userApp.room.userDao().getPlantsIrrigated(userCode)
+    var plantsIrrigatedB = userApp.room.userDao().getPlantsIrrigatedB(userCode)
+    plantsIrrigated += 1
+    plantsIrrigatedB += 1
+    userApp.room.userDao().setPlantsIrrigated(plantsIrrigated,userCode)
     userApp.room.userDao().setPlantsIrrigatedB(plantsIrrigatedB,userCode)
+}
+
+suspend fun addIrrigatedC(userApp:UserApp, userCode:String){
+    var plantsIrrigated = userApp.room.userDao().getPlantsIrrigated(userCode)
+    var plantsIrrigatedC = userApp.room.userDao().getPlantsIrrigatedC(userCode)
+    plantsIrrigated += 1
+    plantsIrrigatedC += 1
+    userApp.room.userDao().setPlantsIrrigated(plantsIrrigated,userCode)
     userApp.room.userDao().setPlantsIrrigatedC(plantsIrrigatedC,userCode)
 }

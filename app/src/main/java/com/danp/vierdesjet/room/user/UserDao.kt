@@ -45,4 +45,10 @@ interface UserDao {
 
     @Query("UPDATE UserEntity SET plantsIrrigatedC=:number WHERE code = :code")
     suspend fun setPlantsIrrigatedC(number: Int, code:String)
+
+    @Query("SELECT setNotification FROM UserEntity WHERE code = :code")
+    suspend fun getNotification(code:String) : Boolean
+
+    @Query("UPDATE UserEntity SET setNotification=:status WHERE code = :code")
+    suspend fun setNotification(status:Boolean, code:String)
 }

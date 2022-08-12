@@ -29,6 +29,7 @@ class DataStoreManager(private val context: Context){
 
         private val DATE_RESET = stringPreferencesKey("date_reet")
         private val PLANT_IRRIGATED = stringPreferencesKey("plant_irrigated")
+        private val SET_NOTIFICATION = stringPreferencesKey("SET_NOTIFICATION")
     }
 
     //
@@ -104,9 +105,14 @@ class DataStoreManager(private val context: Context){
             preferences[DATE_RESET] = dateCreationValue
         }
     }
-    suspend fun setPlantIrrigated(plantIrrigatedValue: String){
+    suspend fun trueNotification(){
         context.dataStore.edit { preferences ->
-            preferences[PLANT_IRRIGATED] = plantIrrigatedValue
+            preferences[PLANT_IRRIGATED] = "1"
+        }
+    }
+    suspend fun falseNotification(){
+        context.dataStore.edit { preferences ->
+            preferences[PLANT_IRRIGATED] = "0"
         }
     }
 
@@ -135,7 +141,7 @@ class DataStoreManager(private val context: Context){
     val dateReset: Flow<String?> = context.dataStore.data.map { preferences ->
         preferences[DATE_RESET] ?: ""
     }
-    val plantIrrigated: Flow<String?> = context.dataStore.data.map { preferences ->
-        preferences[PLANT_IRRIGATED] ?: "0"
+    val setNotification: Flow<String?> = context.dataStore.data.map { preferences ->
+        preferences[SET_NOTIFICATION] ?: "0"
     }
 }

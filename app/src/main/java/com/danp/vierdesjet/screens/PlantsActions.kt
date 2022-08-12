@@ -33,6 +33,7 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook
 import java.io.InputStream
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.concurrent.TimeUnit
 
 @Composable
 fun PlantsActions(
@@ -177,6 +178,10 @@ fun PlantsActions(
                         plantApp.room.plantDao().resetAllB(userCode)
                         plantApp.room.plantDao().resetAllC(userCode)
                         userApp.room.userDao().setPlantsIrrigated(0,userCode)
+                        userApp.room.userDao().setPlantsIrrigatedA(0,userCode)
+                        userApp.room.userDao().setPlantsIrrigatedB(0,userCode)
+                        userApp.room.userDao().setPlantsIrrigatedC(0,userCode)
+                        userApp.room.userDao().setNotification(false,userCode)
                         Log.d("Prueba", "Valores reseteados")
                         navPlants()
                     } catch (e: Exception) {
@@ -185,6 +190,19 @@ fun PlantsActions(
                 }
             },modifier = Modifier.width(200.dp)) {
                 Text("RESET")
+            }
+
+            Spacer(modifier = Modifier.height(40.dp))
+
+            Button(onClick = {
+                coroutineScope.launch {
+                    try {
+                        userApp.room.userDao().setNotification(false,userCode)
+                    } catch (e: Exception) {
+                    }
+                }
+            },modifier = Modifier.width(200.dp)) {
+                Text("RESET NOTIFICATIONS")
             }
 
             Spacer(modifier = Modifier.height(40.dp))

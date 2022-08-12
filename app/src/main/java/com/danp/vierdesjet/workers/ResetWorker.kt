@@ -33,6 +33,10 @@ class ResetWorker(context: Context, workerParams: WorkerParameters) :
                     plantApp.room.plantDao().resetAllC(userCode)
                     dataStore.setDateReset(dateTemp)
                     userApp.room.userDao().setPlantsIrrigated(0,userCode)
+                    userApp.room.userDao().setPlantsIrrigatedA(0,userCode)
+                    userApp.room.userDao().setPlantsIrrigatedB(0,userCode)
+                    userApp.room.userDao().setPlantsIrrigatedC(0,userCode)
+                    userApp.room.userDao().setNotification(false,userCode)
                 } catch (e: Exception) { }
             }
         }

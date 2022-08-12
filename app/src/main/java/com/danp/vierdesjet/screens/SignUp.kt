@@ -87,7 +87,8 @@ fun SignUp(
                     0,
                     0,
                     0,
-                    0
+                    0,
+                    false
                 )
                 coroutineScope.launch {
                     try {

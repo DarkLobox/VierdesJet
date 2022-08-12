@@ -119,7 +119,8 @@ fun Config(
                         0,
                         0,
                         0,
-                        0
+                        0,
+                        false
                     )
                     try {
                         user.id = userId.toInt()
@@ -148,7 +149,8 @@ fun Config(
                         0,
                         0,
                         0,
-                        0
+                        0,
+                        false
                     )
                     try {
                         user.id = userId.toInt()

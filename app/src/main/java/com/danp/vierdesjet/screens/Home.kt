@@ -19,9 +19,10 @@ import androidx.work.*
 import com.danp.vierdesjet.DataStoreManager
 import com.danp.vierdesjet.R
 import com.danp.vierdesjet.room.user.UserApp
-import com.danp.vierdesjet.workers.PlantsIrrigatedHour
-import com.danp.vierdesjet.workers.ResetWorker
+import com.danp.vierdesjet.workers.*
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
+import java.util.*
 import java.util.concurrent.TimeUnit
 
 @Composable
@@ -41,23 +42,30 @@ fun Home(
     val userPassword = dataStore.passwordUser.collectAsState(initial = "").value.toString()
     var userName = dataStore.nameUser.collectAsState(initial = "").value.toString()
     val userCode = dataStore.groupUser.collectAsState(initial = "").value.toString()
-    val dateReset = dataStore.dateReset.collectAsState(initial = "").value.toString()
+    var dateReset = dataStore.dateReset.collectAsState(initial = "").value.toString()
+
+    val dateTemp = SimpleDateFormat("dd/M/yyyy").format(Date())
 
     if(userName.compareTo("")!=0){
         userName = "Bienvenido $userName"
 
-        //Reset diario al entrar a la aplicacion
+        //Parametros para works
         val myData = Data.Builder()
             .putString("KEY_RESET_ARG", dateReset)
             .putString("KEY_CODE_ARG", userCode)
             .build()
 
+        //Reset diario al entrar a la aplicacion
         val resetTaskRequest = OneTimeWorkRequestBuilder<ResetWorker>()
             .setInputData(myData)
             .build()
         WorkManager.getInstance(context).enqueue(resetTaskRequest)
 
-        val plantsIrrigatedTaskRequest = PeriodicWorkRequestBuilder<PlantsIrrigatedHour>(20, TimeUnit.MINUTES)
+        //Actualizacion de fecha luego del reseteo
+        dateReset = dataStore.dateReset.collectAsState(initial = "").value.toString()
+
+        //Notificacion por hora de riegos totales
+        val plantsIrrigatedTaskRequest = PeriodicWorkRequestBuilder<PlantsIrrigatedHour>(1, TimeUnit.HOURS)
             .setInputData(myData)
             .build()
         WorkManager.getInstance(context).enqueueUniquePeriodicWork(
@@ -65,6 +73,30 @@ fun Home(
             ExistingPeriodicWorkPolicy.KEEP,
             plantsIrrigatedTaskRequest
         )
+
+        if(dateReset.compareTo(dateTemp)!=0){
+            //Notificaciones secuenciales para riegos de dia, tarde, noche
+            val notificationA = OneTimeWorkRequestBuilder<NotificationA>()
+                .setInputData(myData)
+                .setInitialDelay(20,TimeUnit.SECONDS)
+                .build()
+
+            val notificationB = OneTimeWorkRequestBuilder<NotificationB>()
+                .setInputData(myData)
+                .setInitialDelay(20,TimeUnit.SECONDS)
+                .build()
+
+            val notificationC = OneTimeWorkRequestBuilder<NotificationC>()
+                .setInputData(myData)
+                .setInitialDelay(20,TimeUnit.SECONDS)
+                .build()
+
+            WorkManager.getInstance(context)
+                .beginWith(notificationA)
+                .then(notificationB)
+                .then(notificationC)
+                .enqueue()
+        }
     }
 
     Scaffold(topBar = {

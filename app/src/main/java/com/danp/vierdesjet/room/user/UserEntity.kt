@@ -14,7 +14,8 @@ data class UserEntity(
     val plantsIrrigated: Int,
     val plantsIrrigatedA: Int,
     val plantsIrrigatedB: Int,
-    val plantsIrrigatedC: Int
+    val plantsIrrigatedC: Int,
+    val setNotification: Boolean
 ) {
     @PrimaryKey(autoGenerate = true) var id: Int = 0
 }
